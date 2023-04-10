@@ -5,17 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.technocrat.R;
-import com.example.technocrat.databinding.FragmentNotificationsBinding;
 import com.example.technocrat.databinding.FragmentSettingsBinding;
-import com.example.technocrat.ui.settings.ThemeSettings;
 
 public class SettingsFragment extends Fragment {
 

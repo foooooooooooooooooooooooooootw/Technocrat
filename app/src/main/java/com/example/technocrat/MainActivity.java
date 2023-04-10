@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.technocrat.ui.settings.SettingsFragment;
 import com.example.technocrat.ui.settings.ThemeSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -16,7 +15,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.example.technocrat.ui.settings.ThemeSettings;
 
 import com.example.technocrat.databinding.ActivityMainBinding;
 
