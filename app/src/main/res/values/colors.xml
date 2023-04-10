@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="seafoam_1">#d8f3dc</color>
+    <color name="seafoam_2">#74c69d</color>
+    <color name="skyblue_1">#8ecae6</color>
+    <color name="skyblue_2">#219ebc</color>
+    <color name="twilitnight_1">#8a817c</color>
+    <color name="twilitnight_2">#463f3a</color>
+    <color name="rose_1">#ff4d6d</color>
+    <color name="rose_2">#c9184a</color>
+
 </resources>

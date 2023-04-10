@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Technocrat"
         tools:targetApi="31">
         <activity
+            android:name=".ui.settings.ThemeSettings"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">

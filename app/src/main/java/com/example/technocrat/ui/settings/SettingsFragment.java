@@ -1,32 +1,34 @@
 package com.example.technocrat.ui.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.technocrat.R;
 import com.example.technocrat.databinding.FragmentNotificationsBinding;
-import com.example.technocrat.ui.settings.SettingsViewModel;
+import com.example.technocrat.databinding.FragmentSettingsBinding;
+import com.example.technocrat.ui.settings.ThemeSettings;
 
 public class SettingsFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentSettingsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SettingsViewModel notificationsViewModel =
+        SettingsViewModel settingsViewModel =
                 new ViewModelProvider(this).get(SettingsViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
@@ -34,5 +36,10 @@ public class SettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void ThemeSettingsOpen(View view) {
+        Intent intent = new Intent(SettingsFragment.this.getActivity(), ThemeSettings.class);
+        startActivity(intent);
     }
 }
