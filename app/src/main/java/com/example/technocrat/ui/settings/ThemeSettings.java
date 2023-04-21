@@ -1,15 +1,18 @@
 package com.example.technocrat.ui.settings;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.technocrat.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ThemeSettings extends AppCompatActivity {
 
@@ -23,6 +26,7 @@ public class ThemeSettings extends AppCompatActivity {
     Button button4;
     Button button5;
 
+    ActionBar actionBar;
 
 
     @Override
@@ -35,12 +39,19 @@ public class ThemeSettings extends AppCompatActivity {
         button3 = findViewById(R.id.button5);
         button4 = findViewById(R.id.button6);
         button5 = findViewById(R.id.button7);
+        actionBar = getSupportActionBar();
+
         SharedPreferences settings = getSharedPreferences("theme", Context.MODE_PRIVATE);
         theme = settings.getInt("colour", 0);
         buttonTheme = settings.getInt("buttonColour", 0);
 
         if (theme == 0) {
             constraintLayout.setBackgroundResource(R.color.white);
+            getWindow().setNavigationBarColor(getColor(R.color.purple_200));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.purple_700));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(getResources().getColor(R.color.purple_500));
+            actionBar.setBackgroundDrawable(colorDrawable);
             button1.setBackgroundColor(getResources().getColor(R.color.purple_500));
             button2.setBackgroundColor(getResources().getColor(R.color.purple_500));
             button3.setBackgroundColor(getResources().getColor(R.color.purple_500));
@@ -48,6 +59,11 @@ public class ThemeSettings extends AppCompatActivity {
             button5.setBackgroundColor(getResources().getColor(R.color.purple_500));
         } else if (theme == 1) {
             constraintLayout.setBackgroundResource(R.color.skyblue_1);
+            getWindow().setNavigationBarColor(getColor(R.color.skyblue_3));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.skyblue_3));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(getResources().getColor(R.color.skyblue_2));
+            actionBar.setBackgroundDrawable(colorDrawable);
             button1.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
             button2.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
             button3.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
@@ -55,6 +71,11 @@ public class ThemeSettings extends AppCompatActivity {
             button5.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
         } else if (theme == 2) {
             constraintLayout.setBackgroundResource(R.color.seafoam_1);
+            getWindow().setNavigationBarColor(getColor(R.color.seafoam_3));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.seafoam_3));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(getResources().getColor(R.color.seafoam_2));
+            actionBar.setBackgroundDrawable(colorDrawable);
             button1.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
             button2.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
             button3.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
@@ -62,6 +83,11 @@ public class ThemeSettings extends AppCompatActivity {
             button5.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
         } else if (theme == 3) {
             constraintLayout.setBackgroundResource(R.color.twilitnight_1);
+            getWindow().setNavigationBarColor(getColor(R.color.twilitnight_3));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.twilitnight_3));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(getResources().getColor(R.color.twilitnight_2));
+            actionBar.setBackgroundDrawable(colorDrawable);
             button1.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
             button2.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
             button3.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
@@ -69,6 +95,11 @@ public class ThemeSettings extends AppCompatActivity {
             button5.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
         } else if (theme == 4) {
             constraintLayout.setBackgroundResource(R.color.rose_1);
+            getWindow().setNavigationBarColor(getColor(R.color.rose_3));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.rose_3));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(getResources().getColor(R.color.rose_2));
+            actionBar.setBackgroundDrawable(colorDrawable);
             button1.setBackgroundColor(getResources().getColor(R.color.rose_2));
             button2.setBackgroundColor(getResources().getColor(R.color.rose_2));
             button3.setBackgroundColor(getResources().getColor(R.color.rose_2));
@@ -78,6 +109,11 @@ public class ThemeSettings extends AppCompatActivity {
     }
     public void seaFoam(View view) {
         constraintLayout.setBackgroundResource(R.color.seafoam_1);
+        getWindow().setNavigationBarColor(getColor(R.color.seafoam_3));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.seafoam_3));
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.seafoam_2));
+        actionBar.setBackgroundDrawable(colorDrawable);
         button1.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
         button2.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
         button3.setBackgroundColor(getResources().getColor(R.color.seafoam_2));
@@ -90,6 +126,11 @@ public class ThemeSettings extends AppCompatActivity {
 
     public void skyBlue(View view) {
         constraintLayout.setBackgroundResource(R.color.skyblue_1);
+        getWindow().setNavigationBarColor(getColor(R.color.skyblue_3));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.skyblue_3));
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.skyblue_2));
+        actionBar.setBackgroundDrawable(colorDrawable);
         button1.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
         button2.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
         button3.setBackgroundColor(getResources().getColor(R.color.skyblue_2));
@@ -101,6 +142,11 @@ public class ThemeSettings extends AppCompatActivity {
 
     public void twilitNight(View view) {
         constraintLayout.setBackgroundResource(R.color.twilitnight_1);
+        getWindow().setNavigationBarColor(getColor(R.color.twilitnight_3));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.twilitnight_3));
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.twilitnight_2));
+        actionBar.setBackgroundDrawable(colorDrawable);
         button1.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
         button2.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
         button3.setBackgroundColor(getResources().getColor(R.color.twilitnight_2));
@@ -112,6 +158,11 @@ public class ThemeSettings extends AppCompatActivity {
 
     public void defaultColour(View view) {
         constraintLayout.setBackgroundResource(R.color.white);
+        getWindow().setNavigationBarColor(getColor(R.color.purple_200));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.purple_700));
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.purple_500));
+        actionBar.setBackgroundDrawable(colorDrawable);
         button1.setBackgroundColor(getResources().getColor(R.color.purple_500));
         button2.setBackgroundColor(getResources().getColor(R.color.purple_500));
         button3.setBackgroundColor(getResources().getColor(R.color.purple_500));
@@ -123,6 +174,11 @@ public class ThemeSettings extends AppCompatActivity {
 
     public void rose(View view) {
         constraintLayout.setBackgroundResource(R.color.rose_1);
+        getWindow().setNavigationBarColor(getColor(R.color.rose_3));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.rose_3));
+        ColorDrawable colorDrawable
+                = new ColorDrawable(getResources().getColor(R.color.rose_2));
+        actionBar.setBackgroundDrawable(colorDrawable);
         button1.setBackgroundColor(getResources().getColor(R.color.rose_2));
         button2.setBackgroundColor(getResources().getColor(R.color.rose_2));
         button3.setBackgroundColor(getResources().getColor(R.color.rose_2));
