@@ -18,6 +18,11 @@
         android:title="Generators" />
 
     <item
+        android:id="@+id/navigation_manuals"
+        android:icon="@drawable/book_24dp"
+        android:title="Manuals" />
+
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="Settings" />

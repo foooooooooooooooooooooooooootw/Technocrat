@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.manuals.ManualFragment">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button4"
         android:layout_width="192dp"
         android:layout_height="210dp"
-        android:text="CPU Database"
+        android:onClick="WiringDiagramsOpen"
+        android:text="Wiring Diagrams"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.073"

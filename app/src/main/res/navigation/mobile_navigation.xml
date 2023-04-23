@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_manuals"
+        android:name="com.example.technocrat.ui.manuals.ManualFragment"
+        android:label="Manuals"
+        tools:layout="@layout/fragment_manual" />
+    
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.technocrat.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
