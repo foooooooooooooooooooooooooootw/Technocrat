@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.technocrat.ui.dashboard.SpoofFilenames;
 import com.example.technocrat.ui.manuals.WiringDiagrams;
 import com.example.technocrat.ui.settings.ThemeSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void WiringDiagramsOpen (View v){
         Intent intent = new Intent(this, WiringDiagrams.class);
+        startActivity(intent);
+    }
+
+    public void SpoofFilenamesOpen (View v){
+        Intent intent = new Intent(this, SpoofFilenames.class);
         startActivity(intent);
     }
 }

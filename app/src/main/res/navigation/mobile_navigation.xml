@@ -20,13 +20,13 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.technocrat.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Files"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.technocrat.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="Generators"
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
