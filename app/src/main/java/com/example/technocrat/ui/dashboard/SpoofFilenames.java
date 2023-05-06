@@ -5,28 +5,48 @@ import static android.view.View.GONE;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.FileUtils;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.technocrat.R;
 import com.example.technocrat.ui.settings.ThemeSettings;
 
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -67,6 +87,10 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     Button button10;
 
     Button button11;
+
+    ImageView imageView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +105,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         textView3 = findViewById(R.id.textView3);
         button10 = findViewById(R.id.button10);
         button11 = findViewById(R.id.button11);
+        imageView = findViewById(R.id.imageView);
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         spinner2 = findViewById(R.id.spinner2);
@@ -176,10 +201,14 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         textView3.setText(pickedtime);
     }
 
+
+
+
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 
     public void setDate (View v){
         final Calendar c = Calendar.getInstance();
@@ -236,51 +265,66 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     public void setTime1 (View v){
         final Calendar c = Calendar.getInstance();
 
-        // on below line we are getting our hour, minute.
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        // on below line we are initializing our Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(SpoofFilenames.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        // on below line we are setting selected time
-                        // in our text view.
-                        String stringhour = String.valueOf(hourOfDay);
-                        String stringminute = String.valueOf(minute);
-                        String stringsecond = "00";
-                        textView3.setText(stringhour + stringminute + stringsecond);
+
+                        if(hourOfDay<=9){
+                            String stringhour = 0+String.valueOf(hourOfDay);
+                            String stringminute = String.valueOf(minute);
+                            String stringsecond = "00";
+                            textView3.setText(stringhour + stringminute + stringsecond);
+                        } else {
+                            String stringhour = String.valueOf(hourOfDay);
+                            String stringminute = String.valueOf(minute);
+                            String stringsecond = "00";
+                            textView3.setText(stringhour + stringminute + stringsecond);
+                        }
+
                     }
                 }, hour, minute, false);
-        // at last we are calling show to
-        // display our time picker dialog.
+
         timePickerDialog.show();
     }
 
 
-    public void Generate (View v){
+    public void Generate (View v) throws IOException {
 
         Pattern p = Pattern.compile("\\d{8}");
         Pattern p2 = Pattern.compile("\\d{6}");
         Matcher m = p.matcher(textView2.getText().toString());
         Matcher m2 = p2.matcher(textView3.getText().toString());
-        if (m.matches() && m2.matches()) {
+        if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + textView3.getText().toString();
+            Uri filepath = Uri.parse(imageView.getTag().toString());
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, androidimgname);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.getContentResolver().update(filepath, contentValues, null);
+            }
+            System.out.println("executed");
+
+        } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename")) {
+            
         }
-        //iphone 0001 to 9999
-        Random random = new Random();
-        int randomiphone = random.nextInt(10000 - 1) + 1;
-        System.out.println(randomiphone);
+        {
+
+        }
 
         //unix time
-        long currentunixTime = System.currentTimeMillis()/1000L;
+        Random random = new Random();
+        long currentunixTime = System.currentTimeMillis() / 1000L;
         long minunixTime = 1451577600;
         long unixtimediff = currentunixTime - minunixTime;
         int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(randomunix*1000L);
+        cal.setTimeInMillis(randomunix * 1000L);
         String date = DateFormat.format("yyyyMMdd", cal).toString();
         System.out.println(date);
 
@@ -294,6 +338,62 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         String androidimgname = "IMG_" + date + "_" + formatted24h;
         System.out.println(androidimgname);
 
+        //iphone 0001 to 9999
+        int randomiphone = random.nextInt(10000 - 1) + 1;
+
+
+
+
+
 
     }
+
+    private Context context;
+
+    public void rename(Uri uri, String rename) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, rename);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.getContentResolver().update(uri, contentValues, null);
+        }
+    }
+
+    public void ImgSelect (View v) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+
+    }
+
+    public static final int PICK_IMAGE = 1;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                Uri filePath = data.getData();
+
+                Bitmap img= null;
+                try {
+                    img = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                if(img!= null){
+                    imageView.setImageBitmap(img);
+                    System.out.println(filePath.toString());
+                    imageView.setTag(filePath.toString());
+
+                }
+        }
+    }
+
+    }
+
 }
