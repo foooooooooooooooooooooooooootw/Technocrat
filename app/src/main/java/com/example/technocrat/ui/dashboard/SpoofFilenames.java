@@ -110,6 +110,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         spinner.setOnItemSelectedListener(this);
         spinner2 = findViewById(R.id.spinner2);
         spinner2.setOnItemSelectedListener(this);
+        spinner2.setSelection(0,true);
         SharedPreferences settings = getSharedPreferences("theme", Context.MODE_PRIVATE);
         theme = settings.getInt("colour", 0);
         buttonTheme = settings.getInt("buttonColour", 0);
@@ -197,8 +198,13 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setText("Not used for this option");
         }
         String selectedseconds = spinner2.getSelectedItem().toString();
-        String pickedtime = textView3.getText().toString().substring(0,textView3.length()-2) + selectedseconds;
-        textView3.setText(pickedtime);
+
+        if(textView3.getText().equals("Time")){
+        } else {
+            String pickedtime = textView3.getText().toString().substring(0,textView3.length()-2) + selectedseconds;
+            textView3.setText(pickedtime);
+        }
+
     }
 
 
