@@ -2,6 +2,7 @@ package com.example.technocrat.ui.dashboard;
 
 import static android.view.View.GONE;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,21 +11,28 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUtils;
+import android.os.storage.StorageManager;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -45,6 +53,7 @@ import com.example.technocrat.ui.settings.ThemeSettings;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -95,6 +104,20 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spoof_filenames);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("perm granted");
+            } else {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
+        else {
+
+        }
+
 
         constraintLayout = findViewById(R.id.cl);
         actionBar = getSupportActionBar();
@@ -150,6 +173,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             ColorDrawable colorDrawable
                     = new ColorDrawable(getResources().getColor(R.color.rose_2));
             actionBar.setBackgroundDrawable(colorDrawable);
+
+
         }
 
     }
@@ -285,11 +310,19 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                             String stringminute = String.valueOf(minute);
                             String stringsecond = "00";
                             textView3.setText(stringhour + stringminute + stringsecond);
+                            if (minute<=9){
+                                stringminute = 0+String.valueOf(minute);
+                                textView3.setText(stringhour + stringminute + stringsecond);
+                            }
                         } else {
                             String stringhour = String.valueOf(hourOfDay);
                             String stringminute = String.valueOf(minute);
                             String stringsecond = "00";
                             textView3.setText(stringhour + stringminute + stringsecond);
+                            if (minute<=9){
+                                stringminute = 0+String.valueOf(minute);
+                                textView3.setText(stringhour + stringminute + stringsecond);
+                            }
                         }
 
                     }
@@ -297,7 +330,6 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
         timePickerDialog.show();
     }
-
 
     public void Generate (View v) throws IOException {
 
@@ -307,15 +339,22 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         Matcher m2 = p2.matcher(textView3.getText().toString());
         if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + textView3.getText().toString();
-            Uri filepath = Uri.parse(imageView.getTag().toString());
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, androidimgname);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                context.getContentResolver().update(filepath, contentValues, null);
+            imageView.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, androidimgname + ".png");
+            if (!outFile2.exists()){
+            System.out.println(outFile);
+            outStream = new FileOutputStream(outFile2);
+            draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.close();
+            Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(),"File already exists with this name",Toast.LENGTH_SHORT).show();
             }
-            System.out.println("executed");
-
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename")) {
             
         }
@@ -356,15 +395,6 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
     private Context context;
 
-    public void rename(Uri uri, String rename) {
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, rename);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.getContentResolver().update(uri, contentValues, null);
-        }
-    }
 
     public void ImgSelect (View v) {
         Intent intent = new Intent();
@@ -375,17 +405,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     }
 
     public static final int PICK_IMAGE = 1;
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
             if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 Uri filePath = data.getData();
-
+                System.out.println(filePath);
                 Bitmap img= null;
                 try {
                     img = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -393,7 +423,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
                 if(img!= null){
                     imageView.setImageBitmap(img);
-                    System.out.println(filePath.toString());
+                    String filename = FilenameUtils.getName(String.valueOf(filePath));
+                    System.out.println(filename);
                     imageView.setTag(filePath.toString());
 
                 }
