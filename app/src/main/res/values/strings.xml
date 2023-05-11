@@ -5,7 +5,9 @@
     <string name="title_notifications">Notifications</string>
     <string-array name="spoof_filenames_options">
         <item>Fake iPhone Camera Filename</item>
+        <item>Fake iPhone Screenshot Filename</item>
         <item>Fake Android Camera Filename</item>
+        <item>Fake Android Screenshot Filename</item>
         <item>Fake UUID v1</item>
         <item>Fake UUID v4</item>
     </string-array>

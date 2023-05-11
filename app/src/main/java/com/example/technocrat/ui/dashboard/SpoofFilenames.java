@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -93,11 +95,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
     EditText editText2;
 
+    Button button8;
+
     Button button10;
 
     Button button11;
 
+    Button button14;
+
     ImageView imageView;
+
+    ImageView imageView2;
 
 
     @Override
@@ -126,9 +134,12 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         editText2 = findViewById(R.id.editTextText2);
         textView2 = findViewById(R.id.textView2);
         textView3 = findViewById(R.id.textView3);
+        button8 = findViewById(R.id.button8);
         button10 = findViewById(R.id.button10);
         button11 = findViewById(R.id.button11);
+        button14 = findViewById(R.id.button14);
         imageView = findViewById(R.id.imageView);
+        imageView2 = findViewById(R.id.imageView2);
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         spinner2 = findViewById(R.id.spinner2);
@@ -184,18 +195,43 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         String selected = spinner.getSelectedItem().toString();
         if(selected.equals("Fake iPhone Camera Filename")){
             textView.setText("Example: IMG_0001");
+            button8.setVisibility(View.VISIBLE);
             button10.setVisibility(GONE);
             button11.setVisibility(GONE);
+            button14.setVisibility(GONE);
             textView2.setVisibility(GONE);
             textView3.setVisibility(GONE);
             spinner2.setVisibility(GONE);
             editText.setVisibility(View.VISIBLE);
-            editText.setText("If empty number is random");
             editText2.setVisibility(GONE);
-        } else if(selected.equals("Fake Android Camera Filename")){
-            textView.setText("IMG_20230302_114348");
+        } else if(selected.equals("Fake iPhone Screenshot Filename")){
+            textView.setText("Screenshot 2022-12-22 at 2.12.12 pm");
+            button8.setVisibility(GONE);
             button10.setVisibility(View.VISIBLE);
             button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
+            editText.setVisibility(GONE);
+            editText2.setVisibility(GONE);
+        }else if(selected.equals("Fake Android Camera Filename")){
+            textView.setText("IMG_20230302_114348");
+            button8.setVisibility(View.VISIBLE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(GONE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
+            editText.setVisibility(GONE);
+            editText2.setVisibility(GONE);
+        } else if(selected.equals("Fake Android Screenshot Filename")) {
+            textView.setText("Screenshot_2023-05-10-22-53-11-134");
+            button8.setVisibility(GONE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(View.VISIBLE);
             textView2.setVisibility(View.VISIBLE);
             textView3.setVisibility(View.VISIBLE);
             spinner2.setVisibility(View.VISIBLE);
@@ -239,6 +275,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 
 
     public void setDate (View v){
@@ -335,35 +372,616 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
         Pattern p = Pattern.compile("\\d{8}");
         Pattern p2 = Pattern.compile("\\d{6}");
+        Pattern p3 = Pattern.compile(("\\d{4}"));
         Matcher m = p.matcher(textView2.getText().toString());
         Matcher m2 = p2.matcher(textView3.getText().toString());
+        Matcher m3 = p3.matcher(editText.getText().toString());
         if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + textView3.getText().toString();
-            imageView.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView.getDrawingCache();
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
             FileOutputStream outStream = null;
             File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             System.out.println(directory);
             File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, androidimgname + ".png");
-            if (!outFile2.exists()){
-            System.out.println(outFile);
-            outStream = new FileOutputStream(outFile2);
-            draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.close();
-            Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+            File outFile2 = new File(directory, androidimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(),"File already exists with this name",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches()) {
+            //24h
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter);
+            System.out.println(formatted24h);
+
+            String androidimgname = "IMG_" + textView2.getText().toString() + "_" + formatted24h;
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, androidimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m2.matches()) {
+            //unix time reference
+            Random random = new Random();
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date = DateFormat.format("yyyyMMdd", cal).toString();
+            System.out.println(date);
+
+            String androidimgname = "IMG_" + date + "_" + textView3.getText().toString();
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, androidimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename")) {
-            
-        }
-        {
+            //unix time reference
+            Random random = new Random();
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date = DateFormat.format("yyyyMMdd", cal).toString();
+            System.out.println(date);
 
-        }
+            //24h
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter);
+            System.out.println(formatted24h);
 
-        //unix time
-        Random random = new Random();
+            String androidimgname = "IMG_" + date + "_" + formatted24h;
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, androidimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Camera Filename") && m3.matches()) {
+            String iphoneimgname = "IMG_" + editText.getText();
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(iphoneimgname);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, iphoneimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Camera Filename")) {
+            Random random = new Random();
+            int randomiphone = random.nextInt(10000 - 1) + 1;
+
+            String iphoneimgname = "IMG_" + randomiphone;
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, iphoneimgname + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+        public void Generate2 (View v) throws IOException {
+
+            Pattern p = Pattern.compile("\\d{8}");
+            Pattern p2 = Pattern.compile("\\d{6}");
+            Pattern p3 = Pattern.compile(("\\d{4}"));
+            Matcher m = p.matcher(textView2.getText().toString());
+            Matcher m2 = p2.matcher(textView3.getText().toString());
+            Matcher m3 = p3.matcher(editText.getText().toString());
+            Random random = new Random();
+            if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m.matches() && m2.matches()) {
+                int randommillis = random.nextInt(1000 - 1) + 1;
+                if (randommillis <= 99){
+                    String randommillistring = 0 +String.valueOf(randommillis);
+                    String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0,4) + "-" +
+                            textView2.getText().toString().substring(4,6) + "-" + textView2.getText().toString().substring(6,8) + "-"
+                            + textView3.getText().toString().substring(0,2) + "-" + textView3.getText().toString().substring(2,4) + "-"
+                            + textView3.getText().toString().substring(4,6) + "-" + randommillistring;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()){
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"File already exists with this name",Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    String randommillistring = String.valueOf(randommillis);
+                    String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0,4) + "-" +
+                            textView2.getText().toString().substring(4,6) + "-" + textView2.getText().toString().substring(6,8) + "-"
+                            + textView3.getText().toString().substring(0,2) + "-" + textView3.getText().toString().substring(2,4) + "-"
+                            + textView3.getText().toString().substring(4,6) + "-" + randommillistring;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()){
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"File already exists with this name",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m.matches()) {
+                int randommillis = random.nextInt(1000 - 1) + 1;
+                //24h
+                LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+                String formatted24h = random24h.format(formatter);
+                System.out.println(formatted24h);
+
+                if (randommillis <= 99){
+                    String randommillistring = 0 +String.valueOf(randommillis);
+                    String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0,4) + "-" +
+                            textView2.getText().toString().substring(4,6) + "-" + textView2.getText().toString().substring(6,8) + "-"
+                            + formatted24h.substring(0,2) + "-" + formatted24h.substring(2,4) + "-"
+                            + formatted24h.substring(4,6) + "-" + randommillistring;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()){
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"File already exists with this name, please retry",Toast.LENGTH_SHORT).show();
+                    }
+                } else{
+                    String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0,4) + "-" +
+                            textView2.getText().toString().substring(4,6) + "-" + textView2.getText().toString().substring(6,8) + "-"
+                            + formatted24h.substring(0,2) + "-" + formatted24h.substring(2,4) + "-"
+                            + formatted24h.substring(4,6) + "-" + randommillis;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()){
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"File already exists with this name, please retry",Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m2.matches()) {
+                int randommillis = random.nextInt(1000 - 1) + 1;
+
+                //unix time reference
+                long currentunixTime = System.currentTimeMillis() / 1000L;
+                long minunixTime = 1451577600;
+                long unixtimediff = currentunixTime - minunixTime;
+                int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(randomunix * 1000L);
+                String date = DateFormat.format("yyyyMMdd", cal).toString();
+                System.out.println(date);
+
+                if (randommillis <= 99) {
+                    String randommillistring = 0 + String.valueOf(randommillis);
+                    String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
+                            + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
+                            + textView3.getText().toString().substring(4, 6) + "-" + randommillistring;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
+                            + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
+                            + textView3.getText().toString().substring(4, 6) + "-" + randommillis;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename")) {
+                //unix time reference
+                long currentunixTime = System.currentTimeMillis() / 1000L;
+                long minunixTime = 1451577600;
+                long unixtimediff = currentunixTime - minunixTime;
+                int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(randomunix * 1000L);
+                String date = DateFormat.format("yyyyMMdd", cal).toString();
+                System.out.println(date);
+
+                //24h
+                LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+                String formatted24h = random24h.format(formatter);
+                System.out.println(formatted24h);
+
+                int randommillis = random.nextInt(1000 - 1) + 1;
+
+                if (randommillis <= 99) {
+                    String randommillistring = 0 + String.valueOf(randommillis);
+                    String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
+                            + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
+                            + formatted24h.substring(4, 6) + "-" + randommillistring;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
+                            + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
+                            + formatted24h.substring(4, 6) + "-" + randommillis;
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(directory);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, androidimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m.matches() && m2.matches()){
+                int hours = Integer.parseInt(textView3.getText().toString().substring(0,2));
+                if (hours <= 12) {
+                    String iphoneimgname = "Screenshot_" + textView2.getText().toString().substring(0,4) + "-" +
+                            textView2.getText().toString().substring(4,6) + "-" + textView2.getText().toString().substring(6,8)
+                            + " at " + hours + "." + textView3.getText().toString().substring(2,4) + "."
+                            + textView3.getText().toString().substring(4,6) + " am";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()){
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(),"File Created",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"File already exists with this name",Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int twelvehours = hours - 12;
+                    String iphoneimgname = "Screenshot_" + textView2.getText().toString().substring(0, 4) + "-" +
+                            textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8)
+                            + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
+                            + textView3.getText().toString().substring(4, 6) + " pm";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m2.matches()) {
+                int hours = Integer.parseInt(textView3.getText().toString().substring(0, 2));
+
+                //unix time reference
+                long currentunixTime = System.currentTimeMillis() / 1000L;
+                long minunixTime = 1451577600;
+                long unixtimediff = currentunixTime - minunixTime;
+                int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(randomunix * 1000L);
+                String date = DateFormat.format("yyyyMMdd", cal).toString();
+                System.out.println(date);
+
+                if (hours <= 12) {
+                    String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8)
+                            + " at " + hours + "." + textView3.getText().toString().substring(2, 4) + "."
+                            + textView3.getText().toString().substring(4, 6) + " am";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int twelvehours = hours - 12;
+                    String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8)
+                            + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
+                            + textView3.getText().toString().substring(4, 6) + " pm";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m.matches()) {
+                    int hours = Integer.parseInt(textView3.getText().toString().substring(0, 2));
+
+                    //unix time reference
+                    long currentunixTime = System.currentTimeMillis() / 1000L;
+                    long minunixTime = 1451577600;
+                    long unixtimediff = currentunixTime - minunixTime;
+                    int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(randomunix * 1000L);
+                    String date = DateFormat.format("yyyyMMdd", cal).toString();
+                    System.out.println(date);
+
+                    if (hours <= 12) {
+                        String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                                date.substring(4, 6) + "-" + date.substring(6, 8)
+                                + " at " + hours + "." + textView3.getText().toString().substring(2, 4) + "."
+                                + textView3.getText().toString().substring(4, 6) + " am";
+                        imageView2.buildDrawingCache();
+                        Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                        FileOutputStream outStream = null;
+                        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                        System.out.println(iphoneimgname);
+                        File outFile = new File(directory + "/Technocrat");
+                        File outFile2 = new File(directory, iphoneimgname + ".png");
+                        if (!outFile2.exists()) {
+                            System.out.println(outFile);
+                            outStream = new FileOutputStream(outFile2);
+                            draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                            outStream.close();
+                            Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        int twelvehours = hours - 12;
+                        String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                                date.substring(4, 6) + "-" + date.substring(6, 8)
+                                + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
+                                + textView3.getText().toString().substring(4, 6) + " pm";
+                        imageView2.buildDrawingCache();
+                        Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                        FileOutputStream outStream = null;
+                        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                        System.out.println(iphoneimgname);
+                        File outFile = new File(directory + "/Technocrat");
+                        File outFile2 = new File(directory, iphoneimgname + ".png");
+                        if (!outFile2.exists()) {
+                            System.out.println(outFile);
+                            outStream = new FileOutputStream(outFile2);
+                            draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                            outStream.close();
+                            Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            }  else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename")) {
+
+                //unix time reference
+                long currentunixTime = System.currentTimeMillis() / 1000L;
+                long minunixTime = 1451577600;
+                long unixtimediff = currentunixTime - minunixTime;
+                int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(randomunix * 1000L);
+                String date = DateFormat.format("yyyyMMdd", cal).toString();
+                System.out.println(date);
+
+                //24h reference
+                LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+                String formatted24h = random24h.format(formatter);
+                System.out.println(formatted24h);
+
+                int hours = Integer.parseInt(formatted24h.substring(0, 2));
+
+                if (hours <= 12) {
+                    String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8)
+                            + " at " + hours + "." + formatted24h.substring(2, 4) + "."
+                            + formatted24h.substring(4, 6) + " am";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int twelvehours = hours - 12;
+                    String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                            date.substring(4, 6) + "-" + date.substring(6, 8)
+                            + " at " + twelvehours + "." + formatted24h.substring(2, 4) + "."
+                            + formatted24h.substring(4, 6) + " pm";
+                    imageView2.buildDrawingCache();
+                    Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+                    FileOutputStream outStream = null;
+                    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                    System.out.println(iphoneimgname);
+                    File outFile = new File(directory + "/Technocrat");
+                    File outFile2 = new File(directory, iphoneimgname + ".png");
+                    if (!outFile2.exists()) {
+                        System.out.println(outFile);
+                        outStream = new FileOutputStream(outFile2);
+                        draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        outStream.close();
+                        Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+        //unix time reference
         long currentunixTime = System.currentTimeMillis() / 1000L;
         long minunixTime = 1451577600;
         long unixtimediff = currentunixTime - minunixTime;
@@ -373,7 +991,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         String date = DateFormat.format("yyyyMMdd", cal).toString();
         System.out.println(date);
 
-        //24h
+        //24h reference
         LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formatted24h = random24h.format(formatter);
@@ -387,11 +1005,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         int randomiphone = random.nextInt(10000 - 1) + 1;
 
 
-
-
-
-
     }
+
 
     private Context context;
 
@@ -402,6 +1017,14 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
 
+    }
+
+    public void resetDate (View v){
+        textView2.setText("Date");
+    }
+
+    public void resetTime (View v){
+        textView3.setText("Time");
     }
 
     public static final int PICK_IMAGE = 1;
@@ -426,11 +1049,12 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                     String filename = FilenameUtils.getName(String.valueOf(filePath));
                     System.out.println(filename);
                     imageView.setTag(filePath.toString());
+                    imageView2.setImageDrawable(imageView.getDrawable());
 
                 }
         }
     }
 
     }
-
+// Java KVM more like Java KMS
 }
