@@ -324,6 +324,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                 },
                 year, month, day);
         datePickerDialog.show();
+        Toast.makeText(getApplicationContext(), "Reset to random by tapping text on right", Toast.LENGTH_SHORT).show();
     }
 
     public void setTime1(View v) {
@@ -362,6 +363,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                 }, hour, minute, false);
 
         timePickerDialog.show();
+        Toast.makeText(getApplicationContext(), "Reset to random by tapping text on right", Toast.LENGTH_SHORT).show();
     }
 
     public void Generate(View v) throws IOException {
@@ -372,7 +374,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         Matcher m = p.matcher(textView2.getText().toString());
         Matcher m2 = p2.matcher(textView3.getText().toString());
         Matcher m3 = p3.matcher(editText.getText().toString());
-        if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
+        if (imageView.getDrawable() == null){
+            Toast.makeText(getApplicationContext(), "No image set", Toast.LENGTH_SHORT).show();
+        } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + textView3.getText().toString();
             imageView2.buildDrawingCache();
             Bitmap draw = (Bitmap) imageView2.getDrawingCache();
@@ -531,7 +535,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         Matcher m2 = p2.matcher(textView3.getText().toString());
         Matcher m3 = p3.matcher(editText.getText().toString());
         Random random = new Random();
-        if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m.matches() && m2.matches()) {
+        if (imageView.getDrawable() == null){
+            Toast.makeText(getApplicationContext(), "No image set", Toast.LENGTH_LONG).show();
+        } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m.matches() && m2.matches()) {
             int randommillis = random.nextInt(1000 - 1) + 1;
             if (randommillis <= 99) {
                 String randommillistring = 0 + String.valueOf(randommillis);
