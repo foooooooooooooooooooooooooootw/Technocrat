@@ -58,6 +58,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -70,6 +71,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,6 +96,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
     EditText editText;
 
     EditText editText2;
+
+    EditText editText3;
 
     Button button8;
 
@@ -131,6 +135,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         textView = findViewById(R.id.textView);
         editText = findViewById(R.id.editTextText);
         editText2 = findViewById(R.id.editTextText2);
+        editText3 = findViewById(R.id.editTextText3);
         textView2 = findViewById(R.id.textView2);
         textView3 = findViewById(R.id.textView3);
         button8 = findViewById(R.id.button8);
@@ -203,6 +208,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             spinner2.setVisibility(GONE);
             editText.setVisibility(View.VISIBLE);
             editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
         } else if (selected.equals("Fake iPhone Screenshot Filename")) {
             textView.setText("Screenshot 2022-12-22 at 2.12.12 pm");
             button8.setVisibility(GONE);
@@ -214,6 +220,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             spinner2.setVisibility(View.VISIBLE);
             editText.setVisibility(GONE);
             editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
         } else if (selected.equals("Fake Android Camera Filename")) {
             textView.setText("IMG_20230302_114348");
             button8.setVisibility(View.VISIBLE);
@@ -225,6 +232,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             spinner2.setVisibility(View.VISIBLE);
             editText.setVisibility(GONE);
             editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
         } else if (selected.equals("Fake Android Screenshot Filename")) {
             textView.setText("Screenshot_2023-05-10-22-53-11-134");
             button8.setVisibility(GONE);
@@ -236,17 +244,19 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             spinner2.setVisibility(View.VISIBLE);
             editText.setVisibility(GONE);
             editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
         } else if (selected.equals("Fake UUID v1")) {
-            button10.setVisibility(GONE);
-            button11.setVisibility(GONE);
-            textView2.setVisibility(GONE);
-            textView3.setVisibility(GONE);
-            spinner2.setVisibility(GONE);
+            button8.setVisibility(View.VISIBLE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(GONE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
             textView.setText("37e9316e-e637-11ed-a05b-0242ac120003");
-            editText.setVisibility(View.VISIBLE);
-            editText.setText("If empty MAC address is random");
-            editText2.setVisibility(View.VISIBLE);
-            editText2.setText("If empty date is random");
+            editText.setVisibility(View.GONE);
+            editText2.setVisibility(GONE);
+            editText3.setVisibility(View.VISIBLE);
         } else if (selected.equals("Fake UUID v4")) {
             button10.setVisibility(GONE);
             button11.setVisibility(GONE);
@@ -366,14 +376,18 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         Toast.makeText(getApplicationContext(), "Reset to random by tapping text on right", Toast.LENGTH_SHORT).show();
     }
 
-    public void Generate(View v) throws IOException {
+
+    //region Generates JPG files to spoof camera images
+    public void Generate(View v) throws IOException, ParseException {
 
         Pattern p = Pattern.compile("\\d{8}");
         Pattern p2 = Pattern.compile("\\d{6}");
-        Pattern p3 = Pattern.compile(("\\d{4}"));
+        Pattern p3 = Pattern.compile("\\d{4}");
+        Pattern p4 = Pattern.compile("[\\d\\w]{12}");
         Matcher m = p.matcher(textView2.getText().toString());
         Matcher m2 = p2.matcher(textView3.getText().toString());
         Matcher m3 = p3.matcher(editText.getText().toString());
+        Matcher m4 = p4.matcher(editText3.getText().toString());
         if (imageView.getDrawable() == null){
             Toast.makeText(getApplicationContext(), "No image set", Toast.LENGTH_SHORT).show();
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
@@ -523,9 +537,48 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             } else {
                 Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
             }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1") && m4.matches() && m2.matches() && m.matches()){
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, fakeUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+    //endregion
 
+    //region Generates PNG to spoof screenshots
     public void Generate2(View v) throws IOException {
 
         Pattern p = Pattern.compile("\\d{8}");
@@ -994,7 +1047,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         String date = DateFormat.format("yyyyMMdd", cal).toString();
         System.out.println(date);
 
-        //24h reference
+/*        //24h reference
         LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formatted24h = random24h.format(formatter);
@@ -1005,10 +1058,11 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         System.out.println(androidimgname);
 
         //iphone 0001 to 9999
-        int randomiphone = random.nextInt(10000 - 1) + 1;
+        int randomiphone = random.nextInt(10000 - 1) + 1;*/
 
 
     }
+    //endregion
 
 
     private Context context;
