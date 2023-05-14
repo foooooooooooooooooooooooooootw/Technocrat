@@ -245,7 +245,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText.setVisibility(GONE);
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
-        } else if (selected.equals("Fake UUID v1")) {
+        } else if (selected.equals("Fake UUID v1 JPG")) {
             button8.setVisibility(View.VISIBLE);
             button10.setVisibility(View.VISIBLE);
             button11.setVisibility(View.VISIBLE);
@@ -257,15 +257,42 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText.setVisibility(View.GONE);
             editText2.setVisibility(GONE);
             editText3.setVisibility(View.VISIBLE);
-        } else if (selected.equals("Fake UUID v4")) {
-            button10.setVisibility(GONE);
-            button11.setVisibility(GONE);
-            textView2.setVisibility(GONE);
-            textView3.setVisibility(GONE);
-            spinner2.setVisibility(GONE);
-            textView.setText("c453eab1-ad34-4e8e-8590-8a63ed030f8a");
-            editText.setText("If empty seed is random");
-            editText2.setText("Not used for this option");
+        } else if (selected.equals("Fake UUID v1 PNG")) {
+            button8.setVisibility(GONE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
+            textView.setText("37e9316e-e637-11ed-a05b-0242ac120003");
+            editText.setVisibility(View.GONE);
+            editText2.setVisibility(GONE);
+            editText3.setVisibility(View.VISIBLE);
+        } else if (selected.equals("Fake Epoch Timestamp JPG")) {
+            textView.setText("1681935600");
+            button8.setVisibility(View.VISIBLE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(GONE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
+            editText.setVisibility(GONE);
+            editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
+        } else if (selected.equals("Fake Epoch Timestamp PNG")) {
+            textView.setText("1681935600");
+            button8.setVisibility(GONE);
+            button10.setVisibility(View.VISIBLE);
+            button11.setVisibility(View.VISIBLE);
+            button14.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            spinner2.setVisibility(View.VISIBLE);
+            editText.setVisibility(GONE);
+            editText2.setVisibility(GONE);
+            editText3.setVisibility(GONE);
         }
         String selectedseconds = spinner2.getSelectedItem().toString();
 
@@ -537,7 +564,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             } else {
                 Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
             }
-        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1") && m4.matches() && m2.matches() && m.matches()){
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m2.matches() && m.matches()){
+            //MAC Address, date, time provided
             long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
             long variant3BitFlag = 0x8000000000000000L;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -555,6 +583,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             long least64SigBits =  chosen63BitLong | variant3BitFlag;
             long most64SigBits = time_low | time_mid | version | time_hi;
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
             imageView2.buildDrawingCache();
             Bitmap draw = (Bitmap) imageView2.getDrawingCache();
@@ -563,7 +592,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(directory);
 
             File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, fakeUUID + ".jpg");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
             if (!outFile2.exists()) {
                 System.out.println(outFile);
                 outStream = new FileOutputStream(outFile2);
@@ -574,19 +603,478 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             } else {
                 Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
             }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m.matches()){
+            //Mac Address and date, no time provided
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16);
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m2.matches()){
+            //MAC Address, date, time provided
+            Random random = new Random();
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches() && m.matches()){
+            // Time and date provided, no MAC Address
+            Random random = new Random();
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches()){
+            //Time provided, no date or MAC Address
+            Random random = new Random();
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m.matches()){
+            //date provided, no time or MAC Address
+            Random random = new Random();
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches()){
+            //MAC Address provided, no time or date
+            Random random = new Random();
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG")) {
+            //Nothing provided
+            Random random = new Random();
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits = chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m.matches() && m2.matches()) {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m.matches()) {
+            Random random = new Random();
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(textView2.getText().toString());
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m2.matches()) {
+            Random random = new Random();
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2, 4)))) * 60) + Integer.parseInt(textView3.getText().toString().substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG")) {
+            Random random = new Random();
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".jpg");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     //endregion
 
     //region Generates PNG to spoof screenshots
-    public void Generate2(View v) throws IOException {
+    public void Generate2(View v) throws IOException, ParseException {
 
         Pattern p = Pattern.compile("\\d{8}");
         Pattern p2 = Pattern.compile("\\d{6}");
-        Pattern p3 = Pattern.compile(("\\d{4}"));
+        Pattern p3 = Pattern.compile("\\d{4}");
+        Pattern p4 = Pattern.compile("[\\d\\w]{12}");
         Matcher m = p.matcher(textView2.getText().toString());
         Matcher m2 = p2.matcher(textView3.getText().toString());
         Matcher m3 = p3.matcher(editText.getText().toString());
+        Matcher m4 = p4.matcher(editText3.getText().toString());
         Random random = new Random();
         if (imageView.getDrawable() == null){
             Toast.makeText(getApplicationContext(), "No image set", Toast.LENGTH_LONG).show();
@@ -1035,9 +1523,496 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                     Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m2.matches() && m.matches()){
+            //MAC Address, date, time provided
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m.matches()){
+            //Mac Address and date, no time provided
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16);
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m2.matches()){
+            //MAC Address, date, time provided
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches() && m.matches()){
+            // Time and date provided, no MAC Address
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches()){
+            //Time provided, no date or MAC Address
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m.matches()){
+            //date provided, no time or MAC Address
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches()){
+            //MAC Address provided, no time or date
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(date2);
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((formatted24h.substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2,4)))) * 60) + Integer.parseInt(formatted24h.substring(4,6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits =  chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG")) {
+            //Nothing provided
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
+            long variant3BitFlag = 0x8000000000000000L;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+            long androidepoch = Long.parseLong(epochstr) * 1000;
+            final long selectedTimeMillis = androidepoch;
+            final long time_low = (selectedTimeMillis & 0x0000_0000_FFFF_FFFFL) << 32;
+            final long time_mid = ((selectedTimeMillis >> 32) & 0xFFFF) << 16;
+            final long version = 1 << 12;
+            final long time_hi = ((selectedTimeMillis >> 48) & 0x0FFF);
+            long least64SigBits = chosen63BitLong | variant3BitFlag;
+            long most64SigBits = time_low | time_mid | version | time_hi;
+            UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
+            String uppercaseUUID = fakeUUID.toString().toUpperCase();
+            System.out.println(fakeUUID);
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, uppercaseUUID + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(fakeUUID.toString());
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m.matches() && m2.matches()) {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date)formatter.parse(textView2.getText().toString());
+            long epoch=(date.getTime()/1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0,2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m.matches()) {
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(textView2.getText().toString());
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m2.matches()) {
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((textView3.getText().toString().substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((textView3.getText().toString().substring(2, 4)))) * 60) + Integer.parseInt(textView3.getText().toString().substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
+        } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG")) {
+            LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
+            String formatted24h = random24h.format(formatter2);
+
+            long currentunixTime = System.currentTimeMillis() / 1000L;
+            long minunixTime = 1451577600;
+            long unixtimediff = currentunixTime - minunixTime;
+            int randomunix = random.nextInt(Math.toIntExact(unixtimediff)) + Math.toIntExact(minunixTime);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(randomunix * 1000L);
+            String date2 = DateFormat.format("yyyyMMdd", cal).toString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = (Date) formatter.parse(date2);
+            long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
+                    ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
+            System.out.println(epoch);
+            String epochstr = Long.toString(epoch);
+
+            imageView2.buildDrawingCache();
+            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+            FileOutputStream outStream = null;
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            System.out.println(directory);
+
+            File outFile = new File(directory + "/Technocrat");
+            File outFile2 = new File(directory, epochstr + ".png");
+            if (!outFile2.exists()) {
+                System.out.println(outFile);
+                outStream = new FileOutputStream(outFile2);
+                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+                textView.setText(epochstr);
+            } else {
+                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+            }
         }
 
-        //unix time reference
+/*      //unix time reference
         long currentunixTime = System.currentTimeMillis() / 1000L;
         long minunixTime = 1451577600;
         long unixtimediff = currentunixTime - minunixTime;
@@ -1047,7 +2022,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         String date = DateFormat.format("yyyyMMdd", cal).toString();
         System.out.println(date);
 
-/*        //24h reference
+       //24h reference
         LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formatted24h = random24h.format(formatter);

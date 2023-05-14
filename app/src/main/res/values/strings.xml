@@ -8,8 +8,10 @@
         <item>Fake iPhone Screenshot Filename</item>
         <item>Fake Android Camera Filename</item>
         <item>Fake Android Screenshot Filename</item>
-        <item>Fake UUID v1</item>
-        <item>Fake UUID v4</item>
+        <item>Fake UUID v1 JPG</item>
+        <item>Fake UUID v1 PNG</item>
+        <item>Fake Epoch Timestamp JPG</item>
+        <item>Fake Epoch Timestamp PNG</item>
     </string-array>
     <string-array name="seconds">
         <item>00</item>
