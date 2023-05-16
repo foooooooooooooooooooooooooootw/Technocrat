@@ -191,6 +191,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
 
         }
+        imageView.setImageResource(R.drawable.technocratv1);
 
     }
 
@@ -253,7 +254,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             textView2.setVisibility(View.VISIBLE);
             textView3.setVisibility(View.VISIBLE);
             spinner2.setVisibility(View.VISIBLE);
-            textView.setText("37e9316e-e637-11ed-a05b-0242ac120003");
+            textView.setText("37E9316E-E637-11ED-A05B-0242AC120003");
             editText.setVisibility(View.GONE);
             editText2.setVisibility(GONE);
             editText3.setVisibility(View.VISIBLE);
@@ -265,7 +266,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             textView2.setVisibility(View.VISIBLE);
             textView3.setVisibility(View.VISIBLE);
             spinner2.setVisibility(View.VISIBLE);
-            textView.setText("37e9316e-e637-11ed-a05b-0242ac120003");
+            textView.setText("37E9316E-E637-11ED-A05B-0242AC120003");
             editText.setVisibility(View.GONE);
             editText2.setVisibility(GONE);
             editText3.setVisibility(View.VISIBLE);
@@ -1932,7 +1933,6 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                 System.out.println(outFile);
                 outStream = new FileOutputStream(outFile2);
                 draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
                 Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
                 textView.setText(epochstr);
             } else {
@@ -2088,6 +2088,21 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             }
         }
 
+    }
+
+    public void openHelp (View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Heads up").setMessage("Greetings! \n\nScreenshots are saved as .png and camera images are saved as .jpg. \n\n" +
+                "Hit the logo right above the bottom-most button to select an image. \n\n" +
+                "All photos are re-saved into the photos directory and all exif data should be gone. \n\n" +
+                "Faked UUIDs are in all caps - yes I know its a violation of RFC but the point is to blend in with images downloaded from websites.\n\n" +
+                "Epoch timestamps are unix timestamps which should be self explanatory. \n\n" +
+                "If fields do not have user input it will be randomly generated. \n\n" +
+                "Where date and time can be selected hitting the text to the right of the buttons resets it to random."
+        );
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 // Java KVM more like Java KMS
 }
