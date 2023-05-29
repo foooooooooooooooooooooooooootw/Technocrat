@@ -13,6 +13,11 @@
         <item>Fake Epoch Timestamp JPG</item>
         <item>Fake Epoch Timestamp PNG</item>
     </string-array>
+    <string-array name="unique_filenames_options">
+        <item>UUID v1</item>
+        <item>UUID v4</item>
+        <item>Epoch Timestamp</item>
+    </string-array>
     <string-array name="seconds">
         <item>00</item>
         <item>01</item>

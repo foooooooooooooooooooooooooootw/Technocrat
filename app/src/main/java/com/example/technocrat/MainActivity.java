@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.technocrat.ui.dashboard.SpoofFilenames;
+import com.example.technocrat.ui.dashboard.UniqueFilenames;
 import com.example.technocrat.ui.manuals.WiringDiagrams;
 import com.example.technocrat.ui.settings.ThemeSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -155,6 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void SpoofFilenamesOpen (View v){
         Intent intent = new Intent(this, SpoofFilenames.class);
+        startActivity(intent);
+    }
+
+    public void UniqueFilenamesOpen (View v){
+        Intent intent = new Intent(this, UniqueFilenames.class);
         startActivity(intent);
     }
 }
