@@ -420,22 +420,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             Toast.makeText(getApplicationContext(), "No image set", Toast.LENGTH_SHORT).show();
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches() && m2.matches()) {
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + textView3.getText().toString();
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, androidimgname + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-            }
+
+            saveJPG(androidimgname);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m.matches()) {
             //24h
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -444,22 +431,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(formatted24h);
 
             String androidimgname = "IMG_" + textView2.getText().toString() + "_" + formatted24h;
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, androidimgname + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+
+            saveJPG(androidimgname);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename") && m2.matches()) {
             //unix time reference
             Random random = new Random();
@@ -473,23 +447,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(date);
 
             String androidimgname = "IMG_" + date + "_" + textView3.getText().toString();
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, androidimgname + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
 
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(androidimgname);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Camera Filename")) {
             //unix time reference
             Random random = new Random();
@@ -509,23 +469,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(formatted24h);
 
             String androidimgname = "IMG_" + date + "_" + formatted24h;
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, androidimgname + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
 
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(androidimgname);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Camera Filename") && m3.matches()) {
             String iphoneimgname = "IMG_" + editText.getText();
             imageView2.buildDrawingCache();
@@ -549,22 +495,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             int randomiphone = random.nextInt(10000 - 1) + 1;
 
             String iphoneimgname = "IMG_" + randomiphone;
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, iphoneimgname + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+
+            saveJPG(iphoneimgname);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m2.matches() && m.matches()){
             //MAC Address, date, time provided
             long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16) & 0x3FFFFFFFFFFFFFFFL;
@@ -586,24 +519,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m.matches()){
             //Mac Address and date, no time provided
             long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16);
@@ -628,24 +546,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m2.matches()){
             //MAC Address, date, time provided
             Random random = new Random();
@@ -676,24 +579,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches() && m.matches()){
             // Time and date provided, no MAC Address
             Random random = new Random();
@@ -716,24 +604,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches()){
             //Time provided, no date or MAC Address
             Random random = new Random();
@@ -764,24 +637,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m.matches()){
             //date provided, no time or MAC Address
             Random random = new Random();
@@ -808,24 +666,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches()){
             //MAC Address provided, no time or date
             Random random = new Random();
@@ -860,24 +703,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG")) {
             //Nothing provided
             Random random = new Random();
@@ -912,24 +740,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            saveJPG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m.matches() && m2.matches()) {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -938,24 +751,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                     ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            saveJPG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m.matches()) {
             Random random = new Random();
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -969,24 +766,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(epoch);
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            saveJPG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m2.matches()) {
             Random random = new Random();
             long currentunixTime = System.currentTimeMillis() / 1000L;
@@ -1004,24 +785,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(epoch);
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            saveJPG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG")) {
             Random random = new Random();
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -1043,24 +808,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(epoch);
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            saveJPG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".jpg");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         }
     }
     //endregion
@@ -1087,44 +836,18 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8) + "-"
                         + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
                         + textView3.getText().toString().substring(4, 6) + "-" + randommillistring;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             } else {
                 String randommillistring = String.valueOf(randommillis);
                 String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0, 4) + "-" +
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8) + "-"
                         + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
                         + textView3.getText().toString().substring(4, 6) + "-" + randommillistring;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m.matches()) {
@@ -1141,43 +864,16 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8) + "-"
                         + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
                         + formatted24h.substring(4, 6) + "-" + randommillistring;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             } else {
                 String androidimgname = "Screenshot_" + textView2.getText().toString().substring(0, 4) + "-" +
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8) + "-"
                         + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
                         + formatted24h.substring(4, 6) + "-" + randommillis;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
 
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename") && m2.matches()) {
@@ -1199,43 +895,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
                         + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
                         + textView3.getText().toString().substring(4, 6) + "-" + randommillistring;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             } else {
                 String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
                         + textView3.getText().toString().substring(0, 2) + "-" + textView3.getText().toString().substring(2, 4) + "-"
                         + textView3.getText().toString().substring(4, 6) + "-" + randommillis;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake Android Screenshot Filename")) {
             //unix time reference
@@ -1262,43 +932,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
                         + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
                         + formatted24h.substring(4, 6) + "-" + randommillistring;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             } else {
                 String androidimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8) + "-"
                         + formatted24h.substring(0, 2) + "-" + formatted24h.substring(2, 4) + "-"
                         + formatted24h.substring(4, 6) + "-" + randommillis;
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(directory);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, androidimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(androidimgname);
+
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m.matches() && m2.matches()) {
             int hours = Integer.parseInt(textView3.getText().toString().substring(0, 2));
@@ -1307,44 +951,26 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8)
                         + " at " + hours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " am";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
+            }  else if (hours == 0){
+                String iphoneimgname = "Screenshot_" + textView2.getText().toString().substring(0, 4) + "-" +
+                        textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8)
+                        + " at " + 12 + "." + textView3.getText().toString().substring(2, 4) + "."
+                        + textView3.getText().toString().substring(4, 6) + " am";
+
+                savePNG(iphoneimgname);
+
             } else {
                 int twelvehours = hours - 12;
                 String iphoneimgname = "Screenshot_" + textView2.getText().toString().substring(0, 4) + "-" +
                         textView2.getText().toString().substring(4, 6) + "-" + textView2.getText().toString().substring(6, 8)
                         + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " pm";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m2.matches()) {
             int hours = Integer.parseInt(textView3.getText().toString().substring(0, 2));
@@ -1364,44 +990,26 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + hours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " am";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
+            }  else if (hours == 0){
+                String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                        date.substring(4, 6) + "-" + date.substring(6, 8)
+                        + " at " + 12 + "." + textView3.getText().toString().substring(2, 4) + "."
+                        + textView3.getText().toString().substring(4, 6) + " am";
+
+                savePNG(iphoneimgname);
+
             } else {
                 int twelvehours = hours - 12;
                 String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " pm";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename") && m.matches()) {
             int hours = Integer.parseInt(textView3.getText().toString().substring(0, 2));
@@ -1421,44 +1029,23 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + hours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " am";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
+            } else if (hours == 0){
+            String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                    date.substring(4, 6) + "-" + date.substring(6, 8)
+                    + " at " + 12 + "." + textView3.getText().toString().substring(2, 4) + "."
+                    + textView3.getText().toString().substring(4, 6) + " am";
+
+                savePNG(iphoneimgname);
+
             } else {
                 int twelvehours = hours - 12;
                 String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + twelvehours + "." + textView3.getText().toString().substring(2, 4) + "."
                         + textView3.getText().toString().substring(4, 6) + " pm";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake iPhone Screenshot Filename")) {
 
@@ -1480,49 +1067,30 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
             int hours = Integer.parseInt(formatted24h.substring(0, 2));
 
-            if (hours <= 12) {
+            if (hours < 12 && hours > 0) {
                 String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + hours + "." + formatted24h.substring(2, 4) + "."
                         + formatted24h.substring(4, 6) + " am";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
+
+            } else if (hours == 0){
+                String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
+                        date.substring(4, 6) + "-" + date.substring(6, 8)
+                        + " at " + 12 + "." + formatted24h.substring(2, 4) + "."
+                        + formatted24h.substring(4, 6) + " am";
+
+                savePNG(iphoneimgname);
+
             } else {
                 int twelvehours = hours - 12;
                 String iphoneimgname = "Screenshot_" + date.substring(0, 4) + "-" +
                         date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " at " + twelvehours + "." + formatted24h.substring(2, 4) + "."
                         + formatted24h.substring(4, 6) + " pm";
-                imageView2.buildDrawingCache();
-                Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-                FileOutputStream outStream = null;
-                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                System.out.println(iphoneimgname);
-                File outFile = new File(directory + "/Technocrat");
-                File outFile2 = new File(directory, iphoneimgname + ".png");
-                if (!outFile2.exists()) {
-                    System.out.println(outFile);
-                    outStream = new FileOutputStream(outFile2);
-                    draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                    outStream.close();
-                    Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "File already exists with this name", Toast.LENGTH_SHORT).show();
-                }
+
+                savePNG(iphoneimgname);
             }
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m2.matches() && m.matches()){
             //MAC Address, date, time provided
@@ -1545,24 +1113,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m.matches()){
             //Mac Address and date, no time provided
             long chosen63BitLong = Long.parseLong(editText3.getText().toString(), 16);
@@ -1587,24 +1140,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m2.matches()){
             //MAC Address, date, time provided
             long currentunixTime = System.currentTimeMillis() / 1000L;
@@ -1634,24 +1172,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches() && m.matches()){
             // Time and date provided, no MAC Address
             long chosen63BitLong = random.nextLong() & 0x3FFFFFFFFFFFFFFFL;
@@ -1673,24 +1196,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches()){
             //Time provided, no date or MAC Address
             long currentunixTime = System.currentTimeMillis() / 1000L;
@@ -1720,24 +1228,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m.matches()){
             //date provided, no time or MAC Address
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -1763,24 +1256,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches()){
             //MAC Address provided, no time or date
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -1814,24 +1292,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG")) {
             //Nothing provided
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
@@ -1865,24 +1328,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             UUID fakeUUID = new UUID(most64SigBits, least64SigBits);
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
             System.out.println(fakeUUID);
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, uppercaseUUID + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(fakeUUID.toString());
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+            savePNG(uppercaseUUID);
+
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m.matches() && m2.matches()) {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -1891,24 +1339,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                     ((Integer.parseInt((textView3.getText().toString().substring(2,4)))) * 60) + Integer.parseInt(spinner2.getSelectedItem().toString());
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            savePNG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m.matches()) {
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
             DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
@@ -1921,23 +1353,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(epoch);
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            savePNG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m2.matches()) {
             long currentunixTime = System.currentTimeMillis() / 1000L;
             long minunixTime = 1451577600;
@@ -1954,24 +1371,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(epoch);
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            savePNG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG")) {
             LocalDateTime random24h = LocalDateTime.now().minusHours(new Random().nextInt(24)).minusMinutes(new Random().nextInt(60)).minusSeconds(new Random().nextInt(60));
             DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmmss");
@@ -1990,26 +1391,12 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             long epoch = (date.getTime() / 1000L) + ((Integer.parseInt((formatted24h.substring(0, 2)))) * 60 * 60) +
                     ((Integer.parseInt((formatted24h.substring(2, 4)))) * 60) + Integer.parseInt(formatted24h.substring(4, 6));
             System.out.println(epoch);
+
             String epochstr = Long.toString(epoch);
 
-            imageView2.buildDrawingCache();
-            Bitmap draw = (Bitmap) imageView2.getDrawingCache();
-            FileOutputStream outStream = null;
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            System.out.println(directory);
+            savePNG(epochstr);
 
-            File outFile = new File(directory + "/Technocrat");
-            File outFile2 = new File(directory, epochstr + ".png");
-            if (!outFile2.exists()) {
-                System.out.println(outFile);
-                outStream = new FileOutputStream(outFile2);
-                draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
-                textView.setText(epochstr);
-            } else {
-                Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
-            }
+
         }
 
 /*      //unix time reference
@@ -2090,6 +1477,48 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    public void saveJPG(String filename) throws IOException {
+        imageView2.buildDrawingCache();
+        Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+        FileOutputStream outStream = null;
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        System.out.println(directory);
+
+        File outFile = new File(directory + "/Technocrat");
+        File outFile2 = new File(directory, filename + ".jpg");
+        if (!outFile2.exists()) {
+            System.out.println(outFile);
+            outStream = new FileOutputStream(outFile2);
+            draw.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            outStream.close();
+            Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            textView.setText(filename);
+        } else {
+            Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void savePNG(String filename) throws IOException {
+        imageView2.buildDrawingCache();
+        Bitmap draw = (Bitmap) imageView2.getDrawingCache();
+        FileOutputStream outStream = null;
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        System.out.println(directory);
+
+        File outFile = new File(directory + "/Technocrat");
+        File outFile2 = new File(directory, filename + ".png");
+        if (!outFile2.exists()) {
+            System.out.println(outFile);
+            outStream = new FileOutputStream(outFile2);
+            draw.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.close();
+            Toast.makeText(getApplicationContext(), "File Created", Toast.LENGTH_SHORT).show();
+            textView.setText(filename.toString());
+        } else {
+            Toast.makeText(getApplicationContext(), "File already exists with this name, please retry", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void openHelp (View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Heads up").setMessage("Greetings! \n\nScreenshots are saved as .png and camera images are saved as .jpg. \n\n" +
@@ -2098,7 +1527,9 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
                 "Faked UUIDs are in all caps - yes I know its a violation of RFC but the point is to blend in with images downloaded from websites.\n\n" +
                 "Epoch timestamps are unix timestamps which should be self explanatory. \n\n" +
                 "If fields do not have user input it will be randomly generated. \n\n" +
-                "Where date and time can be selected hitting the text to the right of the buttons resets it to random."
+                "Where date and time can be selected hitting the text to the right of the buttons resets it to random. \n\n" +
+                "This isn't meant to be used with duplicitous intent (although you could), but it's meant to preserve privacy and anonymity. Many " +
+                "people upload their screenshots or images not knowing date, time, EXIF and even mac address can be derived through the file that is uploaded."
         );
 
         AlertDialog alert = builder.create();
