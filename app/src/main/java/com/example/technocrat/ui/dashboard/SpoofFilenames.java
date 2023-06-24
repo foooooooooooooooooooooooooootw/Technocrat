@@ -114,6 +114,8 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
     CheckBox checkBox1;
 
+    CheckBox checkBox2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         spinner2.setOnItemSelectedListener(this);
         spinner2.setSelection(0, true);
         checkBox1 = findViewById(R.id.checkBox);
+        checkBox2 = findViewById(R.id.checkBox2);
         SharedPreferences settings = getSharedPreferences("theme", Context.MODE_PRIVATE);
         theme = settings.getInt("colour", 0);
         buttonTheme = settings.getInt("buttonColour", 0);
@@ -215,6 +218,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         } else if (selected.equals("Fake iPhone Screenshot Filename")) {
             textView.setText("Screenshot 2022-12-22 at 2.12.12 pm");
             button8.setVisibility(GONE);
@@ -228,6 +232,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         } else if (selected.equals("Fake Android Camera Filename")) {
             textView.setText("IMG_20230302_114348");
             button8.setVisibility(View.VISIBLE);
@@ -241,6 +246,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         } else if (selected.equals("Fake Android Screenshot Filename")) {
             textView.setText("Screenshot_2023-05-10-22-53-11-134");
             button8.setVisibility(GONE);
@@ -254,6 +260,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         } else if (selected.equals("Fake UUID v1 JPG")) {
             button8.setVisibility(View.VISIBLE);
             button10.setVisibility(View.VISIBLE);
@@ -267,6 +274,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(View.VISIBLE);
             checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
         } else if (selected.equals("Fake UUID v1 PNG")) {
             button8.setVisibility(GONE);
             button10.setVisibility(View.VISIBLE);
@@ -280,6 +288,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(View.VISIBLE);
             checkBox1.setVisibility(View.VISIBLE);
+            checkBox2.setVisibility(View.VISIBLE);
         } else if (selected.equals("Fake Epoch Timestamp JPG")) {
             textView.setText("1681935600");
             button8.setVisibility(View.VISIBLE);
@@ -293,6 +302,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         } else if (selected.equals("Fake Epoch Timestamp PNG")) {
             textView.setText("1681935600");
             button8.setVisibility(GONE);
@@ -306,6 +316,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             editText2.setVisibility(GONE);
             editText3.setVisibility(GONE);
             checkBox1.setVisibility(GONE);
+            checkBox2.setVisibility(GONE);
         }
         String selectedseconds = spinner2.getSelectedItem().toString();
 
@@ -533,9 +544,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m.matches()){
@@ -564,9 +583,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches() && m2.matches()){
@@ -601,9 +628,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches() && m.matches()){
@@ -630,9 +665,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m2.matches()){
@@ -667,9 +710,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m.matches()){
@@ -700,9 +751,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG") && m4.matches()){
@@ -741,9 +800,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 JPG")) {
@@ -781,9 +848,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
 
             if(checkBox1.isChecked()){
-                saveJPG(uppercaseUUID);
-            } else {
-                saveJPG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID);
+                } else {
+                    saveJPG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    saveJPG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    saveJPG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp JPG") && m.matches() && m2.matches()) {
@@ -1157,9 +1232,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             String uppercaseUUID = fakeUUID.toString().toUpperCase();
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
 
@@ -1191,9 +1274,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches() && m2.matches()){
@@ -1227,9 +1318,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches() && m.matches()){
@@ -1255,9 +1354,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m2.matches()){
@@ -1291,9 +1398,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m.matches()){
@@ -1323,9 +1438,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG") && m4.matches()){
@@ -1363,9 +1486,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake UUID v1 PNG")) {
@@ -1403,9 +1534,17 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
             System.out.println(fakeUUID);
 
             if(checkBox1.isChecked()){
-                savePNG(uppercaseUUID);
-            } else {
-                savePNG(uppercaseUUID.replaceAll("-", ""));
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID);
+                } else {
+                    savePNG(fakeUUID.toString());
+                }
+            } else if (!checkBox1.isChecked()) {
+                if (checkBox2.isChecked()) {
+                    savePNG(uppercaseUUID.replaceAll("-", ""));
+                } else {
+                    savePNG(fakeUUID.toString().replaceAll("-", ""));
+                }
             }
 
         } else if (spinner.getSelectedItem().toString().equals("Fake Epoch Timestamp PNG") && m.matches() && m2.matches()) {
@@ -1605,7 +1744,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
         builder.setTitle("Heads up").setMessage("Greetings! \n\nScreenshots are saved as .png and camera images are saved as .jpg. \n\n" +
                 "Hit the logo right above the bottom-most button to select an image. \n\n" +
                 "All photos are re-saved into the photos directory and all exif data should be gone. \n\n" +
-                "Faked UUIDs are in all caps - yes I know its a violation of RFC but the point is to blend in with images downloaded from websites. The hyphenated checkbox is to provide flexibility since some websites create UUIDs without hyphens. \n\n" +
+                "Faked UUIDs are in all caps by default - yes I know its a violation of RFC but the point is to blend in with images downloaded from websites. The hyphenated checkbox is to provide flexibility since some websites create UUIDs without hyphens. \n\n" +
                 "Epoch timestamps are unix timestamps which should be self explanatory. \n\n" +
                 "If fields do not have user input it will be randomly generated. \n\n" +
                 "Where date and time can be selected hitting the text to the right of the buttons resets it to random. \n\n" +
