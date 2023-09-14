@@ -1,4 +1,4 @@
-package com.example.technocrat.ui.home;
+package navigation.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

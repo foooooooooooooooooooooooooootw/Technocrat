@@ -198,7 +198,7 @@ public class SpoofFilenames extends AppCompatActivity implements AdapterView.OnI
 
 
         }
-        imageView.setImageResource(R.drawable.technocratv1);
+        imageView.setImageResource(R.drawable.technocratv2);
 
     }
 

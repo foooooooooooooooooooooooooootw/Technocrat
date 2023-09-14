@@ -1,4 +1,4 @@
-package com.example.technocrat.ui.home;
+package navigation.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
