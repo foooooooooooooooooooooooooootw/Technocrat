@@ -141,10 +141,6 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selected = spinner4.getSelectedItem().toString();
-        if (selected.equals("MD5")) {
-
-        }
     }
 
     @Override
@@ -164,8 +160,8 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
     public void Hash (View V) throws FileNotFoundException {
         InputStream is = getContentResolver().openInputStream(Uri.parse(textView4.getText().toString()));
         String selected = spinner4.getSelectedItem().toString();
+        MessageDigest digest = null;
         if (selected.equals("MD5")) {
-            MessageDigest digest = null;
             try {
                 digest = MessageDigest.getInstance("MD5");
             } catch (NoSuchAlgorithmException e) {
@@ -192,6 +188,151 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
                     is.close();
                 } catch (IOException e) {
                     Log.e("calculateMD5", "Exception on closing MD5 input stream", e);
+                }
+            }
+        } else if (selected.equals("SHA-1")){
+            try {
+                digest = MessageDigest.getInstance("SHA-1");
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("calculateSHA-1", "Exception while getting Digest", e);
+                System.out.println("a");
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                output = String.format("%32s", output).replace(' ', '0');
+                System.out.println(output);
+                editText4.setText(output);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to process file for SHA-1", e);
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e("calculateSHA-1", "Exception on closing SHA-1 input stream", e);
+                }
+            }
+        } else if (selected.equals("SHA-224")){
+            try {
+                digest = MessageDigest.getInstance("SHA-224");
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("calculateSHA-224", "Exception while getting Digest", e);
+                System.out.println("a");
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                output = String.format("%32s", output).replace(' ', '0');
+                System.out.println(output);
+                editText4.setText(output);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to process file for SHA-224", e);
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e("calculateSHA-224", "Exception on closing SHA-224 input stream", e);
+                }
+            }
+        } else if (selected.equals("SHA-256")){
+            try {
+                digest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("calculateSHA-256", "Exception while getting Digest", e);
+                System.out.println("a");
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                output = String.format("%32s", output).replace(' ', '0');
+                System.out.println(output);
+                editText4.setText(output);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to process file for SHA-256", e);
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e("calculateSHA-256", "Exception on closing SHA-256 input stream", e);
+                }
+            }
+        } else if (selected.equals("SHA-384")){
+            try {
+                digest = MessageDigest.getInstance("SHA-384");
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("calculateSHA-384", "Exception while getting Digest", e);
+                System.out.println("a");
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                output = String.format("%32s", output).replace(' ', '0');
+                System.out.println(output);
+                editText4.setText(output);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to process file for SHA-384", e);
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e("calculateSHA-384", "Exception on closing SHA-384 input stream", e);
+                }
+            }
+        } else if (selected.equals("SHA-512")){
+            try {
+                digest = MessageDigest.getInstance("SHA-512");
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("calculateSHA-512", "Exception while getting Digest", e);
+                System.out.println("a");
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                output = String.format("%32s", output).replace(' ', '0');
+                System.out.println(output);
+                editText4.setText(output);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to process file for SHA-512", e);
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e("calculateSHA-512", "Exception on closing SHA-512 input stream", e);
                 }
             }
         }

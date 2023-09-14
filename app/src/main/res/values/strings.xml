@@ -22,7 +22,9 @@
     <string-array name="hashing_options">
         <item>MD5</item>
         <item>SHA-1</item>
+        <item>SHA-224</item>
         <item>SHA-256</item>
+        <item>SHA-384</item>
         <item>SHA-512</item>
     </string-array>
 
