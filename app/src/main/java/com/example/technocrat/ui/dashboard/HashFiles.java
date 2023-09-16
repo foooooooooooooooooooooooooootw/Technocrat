@@ -9,11 +9,13 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.technocrat.R;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,6 +63,7 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
     Button button18;
     Button button19;
     ImageView imageView6;
+    ImageView imageView7;
     Spinner spinner4;
 
 
@@ -91,6 +96,7 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
         button18 = findViewById(R.id.button18);
         button19 = findViewById(R.id.button19);
         imageView6 = findViewById(R.id.imageView6);
+        imageView7 = findViewById(R.id.imageView7);
         spinner4 = findViewById(R.id.spinner4);
         spinner4.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         spinner4.setSelection(0, true);
@@ -370,7 +376,33 @@ public class HashFiles extends AppCompatActivity implements AdapterView.OnItemSe
                 c.moveToFirst();
                 System.out.println(c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
                 textView6.setText(c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
+                String extension = c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME)).substring(c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME)).lastIndexOf("."));
+                System.out.println(extension);
+                if (extension.equals(".jpg") || extension.equals(".jpeg") || extension.equals(".png") || extension.equals(".bmp") || extension.equals(".gif")
+                 || extension.equals(".webp") || extension.equals(".heic") || extension.equals(".heif")){
+                    Bitmap img = null;
+                    try {
+                        img = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (img != null) {
+                        imageView6.setImageBitmap(img);
+                    }
+                }
+                }
             }
         }
+
+    public void openHelp2 (View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Heads up").setMessage("Greetings! \n\nScreenshots are saved as .png and camera images are saved as .jpg. \n\n" +
+                "Pick a file, hashing algo and hit hash to hash the file. \n\n" +
+                "SHA-1 should return a 40 character string. Some websites use 41 characters which would be the same thing with a 0 in front. \n\n"
+        );
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
