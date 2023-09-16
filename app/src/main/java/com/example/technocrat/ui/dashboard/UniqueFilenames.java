@@ -115,9 +115,8 @@ public class UniqueFilenames extends AppCompatActivity implements AdapterView.On
             ColorDrawable colorDrawable
                     = new ColorDrawable(getResources().getColor(R.color.rose_2));
             actionBar.setBackgroundDrawable(colorDrawable);
-
-
         }
+        imageView4.setImageResource(R.drawable.technocratv2);
     }
 
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
